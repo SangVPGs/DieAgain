@@ -71,9 +71,11 @@ public class PlayerController : MonoBehaviour
     {
         if (animator == null) return;
 
-        float speedValue = moveInput.magnitude > 0.1f ? 1f : 0f;
+        bool grounded = controller.isGrounded;
+
+        float speedValue = (grounded && moveInput.magnitude > 0.1f) ? 1f : 0f;
 
         animator.SetFloat("Speed", speedValue);
-        animator.SetBool("IsGrounded", controller.isGrounded);
+        animator.SetBool("IsGrounded", grounded);
     }
 }
