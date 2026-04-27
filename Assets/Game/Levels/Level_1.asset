@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8df9a95914a48f448ed2a5321bae667, type: 3}
   m_Name: Level_1
   m_EditorClassIdentifier: Assembly-CSharp::LevelData
+  spawnPosition: {x: 0, y: 0, z: 0}
   grounds:
   - startPosition: {x: 0, y: 0, z: 0}
     length: 4

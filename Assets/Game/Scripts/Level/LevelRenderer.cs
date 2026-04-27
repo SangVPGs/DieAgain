@@ -15,7 +15,6 @@ public class LevelRenderer : MonoBehaviour
             RenderGround(ground);
         }
 
-        // spawn cổng
         Instantiate(goalPrefab, level.goalPosition, Quaternion.identity, transform);
     }
 
@@ -40,7 +39,7 @@ public class LevelRenderer : MonoBehaviour
     {
         for (int i = transform.childCount - 1; i >= 0; i--)
         {
-            DestroyImmediate(transform.GetChild(i).gameObject);
+            Destroy(transform.GetChild(i).gameObject);
         }
     }
 }

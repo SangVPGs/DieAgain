@@ -3,6 +3,10 @@
 [CreateAssetMenu(fileName = "Level_", menuName = "Game/Level")]
 public class LevelData : ScriptableObject
 {
+    [Header("Player")]
+    public Vector3 spawnPosition;
+
+    [Header("Map")]
     public GroundData[] grounds;
     public Vector3 goalPosition;
 }
