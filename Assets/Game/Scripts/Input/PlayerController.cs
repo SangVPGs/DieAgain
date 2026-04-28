@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour
 {
     public float speed = 5f;
-    public float jumpForce = 8f;
+    public float jumpForce = 12f;
     public float gravity = -20f;
     public float rotationSpeed = 10f;
 
@@ -16,6 +16,7 @@ public class PlayerController : MonoBehaviour
     private Vector3 currentMove;
 
     public bool canInput = true;
+    bool isDead = false;
 
     [Header("Mobile")]
     public Joystick joystick;
@@ -28,11 +29,15 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        if (isDead) return;
+
         Vector2 input = GetInput();
 
         Move(input);
         ApplyGravity();
         UpdateAnimation(input);
+
+        CheckFallDeath();
     }
 
     Vector2 GetInput()
@@ -89,9 +94,10 @@ public class PlayerController : MonoBehaviour
     {
         if (!canInput) return;
 
-        if (controller != null && controller.isGrounded)
+        if (controller.isGrounded)
         {
             velocity.y = jumpForce;
+            AudioManager.Instance.PlayJump();
         }
     }
 
@@ -112,4 +118,59 @@ public class PlayerController : MonoBehaviour
         animator.SetFloat("Speed", speedValue);
         animator.SetBool("IsGrounded", grounded);
     }
+
+    void CheckFallDeath()
+    {
+        if (!controller.isGrounded && velocity.y < -15f)
+        {
+            Die();
+        }
+    }
+
+    void OnControllerColliderHit(ControllerColliderHit hit)
+    {
+        if (isDead) return;
+
+        var tile = hit.collider.GetComponent<GroundTile>();
+
+        if (tile != null)
+        {
+            tile.TryTrigger();
+        }
+    }
+
+    public void Die()
+    {
+        if (isDead) return;
+
+        isDead = true;
+        canInput = false;
+
+        if (animator != null)
+        {
+            animator.SetBool("IsDead", true);
+        }
+
+        GameManager.Instance.OnPlayerDead();
+    }
+
+    public void ResetState(Vector3 spawnPos)
+    {
+        isDead = false;
+        canInput = true;
+
+        transform.position = spawnPos;
+
+        velocity = Vector3.zero;
+        moveInput = Vector2.zero;
+        currentMove = Vector3.zero;
+
+        if (animator != null)
+        {
+            animator.SetBool("IsDead", false);
+        }
+    }
+
+    public void DisableInput() => canInput = false;
+    public void EnableInput() => canInput = true;
 }

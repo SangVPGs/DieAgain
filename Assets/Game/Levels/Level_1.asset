@@ -20,4 +20,8 @@ MonoBehaviour:
     length: 8
   - startPosition: {x: 32, y: 0, z: 0}
     length: 4
+  fallingTraps:
+  - posXTrigger: 2
+  - posXTrigger: 8
+  - posXTrigger: 11
   goalPosition: {x: 38, y: 0, z: 4}

@@ -15,9 +15,14 @@ MonoBehaviour:
   spawnPosition: {x: 0, y: 0, z: 0}
   grounds:
   - startPosition: {x: 0, y: 0, z: 0}
+    length: 5
+  - startPosition: {x: 13, y: 0, z: 0}
     length: 3
-  - startPosition: {x: 10, y: 0, z: 0}
-    length: 3
-  - startPosition: {x: 20, y: 0, z: 0}
-    length: 10
-  goalPosition: {x: 38, y: 0, z: 4}
+  - startPosition: {x: 21, y: 0, z: 0}
+    length: 6
+  fallingTraps:
+  - posXTrigger: 3
+  - posXTrigger: 7
+  - posXTrigger: 12
+  - posXTrigger: 14
+  goalPosition: {x: 31, y: 0, z: 4}

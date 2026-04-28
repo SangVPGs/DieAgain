@@ -8,6 +8,9 @@ public class LevelData : ScriptableObject
 
     [Header("Map")]
     public GroundData[] grounds;
+
+    public FallingTrapData[] fallingTraps;
+
     public Vector3 goalPosition;
 }
 
@@ -16,4 +19,10 @@ public class GroundData
 {
     public Vector3 startPosition;
     public int length;
+}
+
+[System.Serializable]
+public class FallingTrapData
+{
+    public int posXTrigger;
 }

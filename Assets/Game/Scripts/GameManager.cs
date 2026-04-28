@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -8,54 +9,59 @@ public class GameManager : MonoBehaviour
     public LevelManager levelManager;
     public PlayerController player;
 
-    int currentLevel;
+    private int currentLevel;
+    private int highestLevel;
+
     public int CurrentLevel => currentLevel;
+
+    LevelRenderer levelRenderer;
 
     void Awake()
     {
         Instance = this;
     }
 
-    void OnEnable()
-    {
-        Goal.OnPlayerReachGoal += OnWin;
-    }
-
-    void OnDisable()
-    {
-        Goal.OnPlayerReachGoal -= OnWin;
-    }
-
     void Start()
     {
+        levelRenderer = FindFirstObjectByType<LevelRenderer>();
+
         currentLevel = PlayerPrefs.GetInt("level", 0);
-        LoadCurrentLevel();
+        LoadLevel();
     }
 
-    void LoadCurrentLevel()
+    void LoadLevel()
     {
         levelManager.LoadLevel(currentLevel);
 
-        SpawnPlayer();
-    }
-
-    void SpawnPlayer()
-    {
         var level = levelManager.CurrentLevel;
+        player.ResetState(level.spawnPosition);
 
-        player.transform.position = level.spawnPosition;
+        FindFirstObjectByType<GameUIManager>()?.UpdateLevelText();
+        AudioManager.Instance.PlayBGM();
     }
 
-    void OnWin()
+    public void OnTrapTriggered(int x)
     {
+        var row = levelRenderer.GetRow(x);
+        if (row == null) return;
+
+        foreach (var tile in row)
+        {
+            tile.Fall();
+        }
+    }
+
+    public void OnPlayerReachGoal()
+    {
+        AudioManager.Instance.PlayGoal();
         StartCoroutine(WinFlow());
     }
 
     IEnumerator WinFlow()
     {
-        player.canInput = false;
+        player.DisableInput();
 
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(0.5f);
 
         currentLevel++;
 
@@ -64,8 +70,32 @@ public class GameManager : MonoBehaviour
 
         PlayerPrefs.SetInt("level", currentLevel);
 
-        LoadCurrentLevel();
+        if (currentLevel > highestLevel)
+        {
+            highestLevel = currentLevel;
+            PlayerPrefs.SetInt("highestLevel", highestLevel);
+        }
 
-        player.canInput = true;
+        LoadLevel();
+
+        player.EnableInput();
+    }
+
+    public void OnPlayerDead()
+    {
+        AudioManager.Instance.PlayDie();
+        StartCoroutine(LoseFlow());
+    }
+
+    IEnumerator LoseFlow()
+    {
+        player.DisableInput();
+
+        AudioManager.Instance.PlayLose();
+
+        yield return new WaitForSeconds(5f);
+
+        PlayerPrefs.SetString("MenuState", MenuState.Lose.ToString());
+        SceneManager.LoadScene("Menu");
     }
 }
