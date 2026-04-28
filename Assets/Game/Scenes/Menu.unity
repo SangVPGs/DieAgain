@@ -548,6 +548,7 @@ GameObject:
   - component: {fileID: 570997616}
   - component: {fileID: 570997618}
   - component: {fileID: 570997619}
+  - component: {fileID: 570997620}
   m_Layer: 5
   m_Name: MenuUIManager
   m_TagString: Untagged
@@ -601,6 +602,18 @@ MonoBehaviour:
   levelPanel: {fileID: 1865988025}
   losePanel: {fileID: 1192730185}
   characterAnimator: {fileID: 1244690155}
+--- !u!114 &570997620
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 570997615}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7badeb33a0ef4b44bbf9066f6cb39101, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ForceLandscapeOnly
 --- !u!1 &657773838
 GameObject:
   m_ObjectHideFlags: 0
@@ -1322,6 +1335,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5616121376803935101, guid: 3b03c219103caf0459b2f83d5939296b, type: 3}
+      propertyPath: m_Avatar
+      value: 
+      objectReference: {fileID: 9000000, guid: 22157c42e157fe848b86e326ea73ffcd, type: 3}
     - target: {fileID: 5616121376803935101, guid: 3b03c219103caf0459b2f83d5939296b, type: 3}
       propertyPath: m_Controller
       value: 
